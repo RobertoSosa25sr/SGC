@@ -32,21 +32,25 @@ class SecurityQuestionForm extends Component
 
         try {
             $user = Auth::user();
+            $oldQuestionId = $user->security_question_id;
             
             $user->forceFill([
                 'security_question_id' => $this->state['security_question_id'],
                 'security_answer' => Hash::make($this->state['security_answer']),
             ])->save();
 
-            Notification::create([
-                'user_id' => $user->id,
-                'type' => 'security_question_updated',
-                'message' => 'Su pregunta de seguridad fue actualizada exitosamente',
-                'notified_at' => now(),
-                'read' => false,
-                'ip_address' => request()->ip(),
-                'user_agent' => request()->userAgent()
-            ]);
+            // Solo creamos notificación si realmente cambió la pregunta
+            if ($oldQuestionId !== $this->state['security_question_id']) {
+                Notification::create([
+                    'user_id' => $user->id,
+                    'type' => 'profile_updated',
+                    'message' => 'Su pregunta de seguridad fue actualizada',
+                    'notified_at' => now(),
+                    'read' => false,
+                    'ip_address' => request()->ip(),
+                    'user_agent' => request()->userAgent()
+                ]);
+            }
 
             $this->state['current_password'] = '';
             $this->state['security_answer'] = '';
@@ -56,8 +60,8 @@ class SecurityQuestionForm extends Component
         } catch (\Exception $e) {
             Notification::create([
                 'user_id' => Auth::id(),
-                'type' => 'security_question_update_failed',
-                'message' => 'Intento fallido de actualización de pregunta de seguridad',
+                'type' => 'profile_update_failed',
+                'message' => 'Error al actualizar la pregunta de seguridad',
                 'notified_at' => now(),
                 'read' => false,
                 'ip_address' => request()->ip(),
