@@ -35,7 +35,7 @@ class UpdateUserPassword implements UpdatesUserPasswords
             Notification::create([
                 'user_id' => $user->id,
                 'type' => 'password_changed',
-                'message' => 'La contraseña fue actualizada exitosamente',
+                'message' => 'Su contraseña fue actualizada exitosamente',
                 'notified_at' => now(),
                 'read' => false,
                 'ip_address' => request()->ip(),

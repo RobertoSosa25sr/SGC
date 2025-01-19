@@ -3,9 +3,9 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Notification;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
@@ -15,11 +15,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      *
      * @param  array<string, mixed>  $input
      */
-    public function update(User $user, array $input): void
+    public function update(AuthUser $user, array $input): void
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'phone' => ['nullable', 'string', 'max:20'],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
         ])->validateWithBag('updateProfileInformation');
 
@@ -27,30 +27,54 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user->updateProfilePhoto($input['photo']);
         }
 
-        if ($input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
-            $this->updateVerifiedUser($user, $input);
-        } else {
+        try {
+            $oldValues = [
+                'name' => $user->name,
+                'phone' => $user->phone,
+            ];
+
             $user->forceFill([
                 'name' => $input['name'],
-                'email' => $input['email'],
+                'phone' => $input['phone'] ?? null,
             ])->save();
+
+            // Crear notificaciones para los campos modificados
+            if ($oldValues['name'] !== $input['name']) {
+                Notification::create([
+                    'user_id' => $user->id,
+                    'type' => 'profile_updated',
+                    'message' => 'Su nombre fue actualizado',
+                    'notified_at' => now(),
+                    'read' => false,
+                    'ip_address' => request()->ip(),
+                    'user_agent' => request()->userAgent()
+                ]);
+            }
+
+            if ($oldValues['phone'] !== ($input['phone'] ?? null)) {
+                Notification::create([
+                    'user_id' => $user->id,
+                    'type' => 'profile_updated',
+                    'message' => 'Su teléfono fue actualizado',
+                    'notified_at' => now(),
+                    'read' => false,
+                    'ip_address' => request()->ip(),
+                    'user_agent' => request()->userAgent()
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            Notification::create([
+                'user_id' => $user->id,
+                'type' => 'profile_update_failed',
+                'message' => 'Error al actualizar el perfil',
+                'notified_at' => now(),
+                'read' => false,
+                'ip_address' => request()->ip(),
+                'user_agent' => request()->userAgent()
+            ]);
+
+            throw $e;
         }
-    }
-
-    /**
-     * Update the given verified user's profile information.
-     *
-     * @param  array<string, string>  $input
-     */
-    protected function updateVerifiedUser(User $user, array $input): void
-    {
-        $user->forceFill([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'email_verified_at' => null,
-        ])->save();
-
-        $user->sendEmailVerificationNotification();
     }
 }
