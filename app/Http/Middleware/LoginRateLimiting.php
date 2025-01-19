@@ -42,7 +42,9 @@ class LoginRateLimiting
                     'type' => 'account_locked',
                     'message' => "Tu cuenta ha sido bloqueada por demasiados intentos fallidos. Podrás intentar nuevamente en {$minutes} minutos.",
                     'notified_at' => now(),
-                    'read' => false
+                    'read' => false,
+                    'ip_address' => $request->ip(),
+                    'user_agent' => $request->userAgent()
                 ]);
             }
             

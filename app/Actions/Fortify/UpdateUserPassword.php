@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -25,8 +26,35 @@ class UpdateUserPassword implements UpdatesUserPasswords
             'current_password.current_password' => __('The provided password does not match your current password.'),
         ])->validateWithBag('updatePassword');
 
-        $user->forceFill([
-            'password' => Hash::make($input['password']),
-        ])->save();
+        try {
+            $user->forceFill([
+                'password' => Hash::make($input['password']),
+            ])->save();
+
+            // Notificación de cambio exitoso
+            Notification::create([
+                'user_id' => $user->id,
+                'type' => 'password_changed',
+                'message' => 'La contraseña fue actualizada exitosamente',
+                'notified_at' => now(),
+                'read' => false,
+                'ip_address' => request()->ip(),
+                'user_agent' => request()->userAgent()
+            ]);
+
+        } catch (\Exception $e) {
+            // Notificación de intento fallido
+            Notification::create([
+                'user_id' => $user->id,
+                'type' => 'password_change_failed',
+                'message' => 'Intento fallido de cambio de contraseña',
+                'notified_at' => now(),
+                'read' => false,
+                'ip_address' => request()->ip(),
+                'user_agent' => request()->userAgent()
+            ]);
+
+            throw $e;
+        }
     }
 }

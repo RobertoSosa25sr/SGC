@@ -18,6 +18,8 @@ return new class extends Migration
                 $table->string('type');
                 $table->text('message');
                 $table->boolean('read')->default(false);
+                $table->string('ip_address')->nullable();
+                $table->text('user_agent')->nullable();
                 $table->timestamp('notified_at');
             });
         }
