@@ -1,0 +1,5 @@
+Configuración de la base de datos:
+
+1. Activar el inicio de sesión con usuario y contraseña
+2. Conceder los permisos necesarios para leer y escribir la base de datos en User Mapping
+2. Conceder el permiso Connect SQL en Securables

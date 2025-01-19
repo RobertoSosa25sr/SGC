@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Features;
+use App\Http\Middleware\LoginRateLimiting;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+    Route::get('/politica-privacidad', function () {
+        $policy = file_get_contents(resource_path('markdown/policy.md'));
+        return view('politica-privacidad', [
+            'policy' => Str::markdown($policy)
+        ]);
+    })->name('politica-privacidad');
+    Route::get('/permisos', function () {
+        return view('permisos');
+    })->name('permisos');
+    Route::get('/historial', function () {
+        return view('historial');
+    })->name('historial');
+    Route::get('/notificaciones', function () {
+        return view('notificaciones');
+    })->name('notificaciones');
+});
+
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+    ->middleware(['guest', LoginRateLimiting::class])
+    ->name('login');
