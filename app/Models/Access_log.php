@@ -20,6 +20,7 @@ class Access_log extends Model
 
     protected $casts = [
         'success' => 'boolean',
+        'read' => 'boolean',
         'attempted_at' => 'datetime',
     ];
 
@@ -27,4 +28,5 @@ class Access_log extends Model
     {
         return $this->belongsTo(User::class);
     }
+
 }

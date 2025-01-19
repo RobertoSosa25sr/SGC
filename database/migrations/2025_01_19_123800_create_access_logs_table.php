@@ -20,6 +20,7 @@ return new class extends Migration
                 $table->string('user_agent')->nullable();
                 $table->boolean('success')->default(false);
                 $table->timestamp('attempted_at');
+                $table->boolean('read')->default(false);
             });
         }
     }
