@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -28,12 +29,25 @@ class CreateNewUser implements CreatesNewUsers
             'security_answer' => ['required', 'string', 'min:3', 'max:255'],
         ])->validate();
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
             'security_question_id' => $input['security_question_id'],
             'security_answer' => Hash::make($input['security_answer']),
         ]);
+
+        // Crear notificación de cuenta creada
+        Notification::create([
+            'user_id' => $user->id,
+            'type' => 'account_created',
+            'message' => 'Su cuenta ha sido creada exitosamente',
+            'notified_at' => now(),
+            'read' => false,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent()
+        ]);
+
+        return $user;
     }
 }
