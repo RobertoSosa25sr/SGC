@@ -14,14 +14,16 @@ return new class extends Migration
             $table->string('question');
         });
 
-        // Preguntas predefinidas
+        // Preguntas más personales y específicas
         DB::table('security_questions')->insert([
-            ['question' => '¿Cuál es el nombre de tu primera mascota?'],
-            ['question' => '¿En qué ciudad naciste?'],
-            ['question' => '¿Cuál es el nombre de tu mejor amigo de la infancia?'],
-            ['question' => '¿Cuál fue tu primer colegio?'],
-            ['question' => '¿Cuál es el segundo nombre de tu madre?']
-        ]);
+            ['question' => 'Contraseña alternativa'],
+            ['question' => 'Correo electrónico alternativo'], 
+            ['question' => '¿Cuál fue el nombre del primer profesor que recuerdas?'],
+            ['question' => '¿En qué calle vivías cuando tenías 10 años?'],
+            ['question' => '¿Cuál fue el primer plato que aprendiste a cocinar?'],
+            ['question' => '¿Cuál fue el primer concierto al que asististe?'],
+            ['question' => '¿Cuál fue el nombre de tu primer mejor amigo en la escuela primaria?'],
+       ]);
     }
 
     public function down(): void
