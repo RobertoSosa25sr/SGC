@@ -19,6 +19,12 @@
                 </div>
 
                 <x-section-border />
+
+                <div class="mt-10 sm:mt-0">
+                    @livewire('profile.security-question-form')
+                </div>
+
+                <x-section-border />
             @endif
 
             @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())

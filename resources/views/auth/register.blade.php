@@ -29,6 +29,23 @@
                 <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
             </div>
 
+            <div class="mt-4">
+                <x-label for="security_question_id" value="{{ __('Security Question') }}" />
+                <select id="security_question_id" name="security_question_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                    <option value="">{{ __('Select a security question') }}</option>
+                    @foreach(\App\Models\SecurityQuestion::all() as $question)
+                        <option value="{{ $question->id }}" {{ old('security_question_id') == $question->id ? 'selected' : '' }}>
+                            {{ $question->question }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="mt-4">
+                <x-label for="security_answer" value="{{ __('Security Answer') }}" />
+                <x-input id="security_answer" class="block mt-1 w-full" type="password" name="security_answer" required />
+            </div>
+
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                 <div class="mt-4">
                     <x-label for="terms">

@@ -30,6 +30,8 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
+        'security_question_id',
+        'security_answer'
     ];
 
     /**
@@ -42,6 +44,7 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
+        'security_answer'
     ];
 
     /**
@@ -64,5 +67,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function securityQuestion()
+    {
+        return $this->belongsTo(SecurityQuestion::class);
     }
 }
