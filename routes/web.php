@@ -7,7 +7,7 @@ use Laravel\Fortify\Features;
 use App\Http\Middleware\LoginRateLimiting;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AccessLogsController;
-
+use App\Http\Controllers\PermisoController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -44,6 +44,10 @@ Route::middleware([
 
     Route::get('/notificaciones', [NotificationController::class, 'index'])
         ->name('notificaciones');
+
+    Route::get('/permisos', [PermisoController::class, 'index'])->name('permisos');
+
+    Route::put('/permisos', [PermisoController::class, 'update'])->name('permisos.update');
 });
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
