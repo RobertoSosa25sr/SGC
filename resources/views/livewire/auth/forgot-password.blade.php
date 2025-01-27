@@ -94,16 +94,10 @@
                         required />
                 </div>
 
-                <div style="text-align: center;">
-                    <button
-                        type="button"
-                        wire:click="resetPassword"
-                        style="width: 100%; padding: 0.5rem; background-color: #3C5D9D; color: white; border-radius: 0.375rem; font-weight: 500;">
-                        {{ __('Actualizar Contraseña') }}
-                    </button>
-                </div>
-                @endif
-            </div>
+        <div class="flex items-center justify-end mt-4">
+            <x-button wire:click="resetPassword">
+                {{ __('Actualizar Contraseña') }}
+            </x-button>
         </div>
-    </x-authentication-card>
-</x-guest-layout>
+    @endif
+</div>
