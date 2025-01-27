@@ -16,8 +16,8 @@
 
                 <x-validation-errors class="mb-4" />
 
+                <!-- Nombres -->
                 <div style="margin-bottom: 1rem;">
-                    <x-label for="name" value="Nombres" style="display: none;" />
                     <x-input
                         id="name"
                         type="text"
@@ -26,11 +26,19 @@
                         placeholder="Nombres"
                         style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
                         required
+                        pattern="^[A-Za-zÁáÉéÍíÓóÚúÑñ\s]{2,50}$"
+                        title="Solo se permiten letras y espacios, mínimo 2 caracteres"
+                        maxlength="50"
+                        oninvalid="this.setCustomValidity('Por favor ingrese un nombre válido')"
+                        oninput="this.setCustomValidity('')"
                         autofocus />
+                    @error('name')
+                    <p style="color: #E53E3E; font-size: 0.875rem; margin-top: 0.25rem;">{{ $message }}</p>
+                    @enderror
                 </div>
 
+                <!-- Correo -->
                 <div style="margin-bottom: 1rem;">
-                    <x-label for="email" value="Correo" style="display: none;" />
                     <x-input
                         id="email"
                         type="email"
@@ -38,38 +46,59 @@
                         :value="old('email')"
                         placeholder="Correo"
                         style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
-                        required />
+                        required
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        maxlength="255"
+                        title="Por favor ingrese un correo electrónico válido"
+                        oninvalid="this.setCustomValidity('Por favor ingrese un correo electrónico válido')"
+                        oninput="this.setCustomValidity('')" />
+                    @error('email')
+                    <p style="color: #E53E3E; font-size: 0.875rem; margin-top: 0.25rem;">{{ $message }}</p>
+                    @enderror
                 </div>
 
+                <!-- Contraseña -->
                 <div style="margin-bottom: 1rem;">
-                    <x-label for="password" value="Contraseña" style="display: none;" />
                     <x-input
                         id="password"
                         type="password"
                         name="password"
                         placeholder="Contraseña"
                         style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
-                        required />
+                        required
+                        minlength="8"
+                        pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                        title="La contraseña debe tener al menos 8 caracteres, incluyendo letras y números"
+                        oninvalid="this.setCustomValidity('La contraseña debe tener al menos 8 caracteres, incluyendo letras y números')"
+                        oninput="this.setCustomValidity('')" />
+                    @error('password')
+                    <p style="color: #E53E3E; font-size: 0.875rem; margin-top: 0.25rem;">{{ $message }}</p>
+                    @enderror
                 </div>
 
+                <!-- Confirmar Contraseña -->
                 <div style="margin-bottom: 1rem;">
-                    <x-label for="password_confirmation" value="Confirmar Contraseña" style="display: none;" />
                     <x-input
                         id="password_confirmation"
                         type="password"
                         name="password_confirmation"
                         placeholder="Confirmar Contraseña"
                         style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
-                        required />
+                        required
+                        minlength="8"
+                        oninvalid="this.setCustomValidity('Por favor confirme su contraseña')"
+                        oninput="this.setCustomValidity('')" />
                 </div>
 
+                <!-- Pregunta de seguridad -->
                 <div style="margin-bottom: 1rem;">
-                    <x-label for="security_question_id" value="Pregunta de seguridad" style="display: none;" />
                     <select
                         id="security_question_id"
                         name="security_question_id"
                         style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
-                        required>
+                        required
+                        oninvalid="this.setCustomValidity('Por favor seleccione una pregunta de seguridad')"
+                        oninput="this.setCustomValidity('')">
                         <option value="">Pregunta de seguridad</option>
                         @foreach(\App\Models\SecurityQuestion::all() as $question)
                         <option value="{{ $question->id }}" {{ old('security_question_id') == $question->id ? 'selected' : '' }}>
@@ -77,17 +106,27 @@
                         </option>
                         @endforeach
                     </select>
+                    @error('security_question_id')
+                    <p style="color: #E53E3E; font-size: 0.875rem; margin-top: 0.25rem;">{{ $message }}</p>
+                    @enderror
                 </div>
 
+                <!-- Respuesta de seguridad -->
                 <div style="margin-bottom: 1.5rem;">
-                    <x-label for="security_answer" value="Respuesta" style="display: none;" />
                     <x-input
                         id="security_answer"
                         type="text"
                         name="security_answer"
                         placeholder="Respuesta"
                         style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
-                        required />
+                        required
+                        minlength="3"
+                        maxlength="100"
+                        oninvalid="this.setCustomValidity('Por favor ingrese una respuesta de seguridad')"
+                        oninput="this.setCustomValidity('')" />
+                    @error('security_answer')
+                    <p style="color: #E53E3E; font-size: 0.875rem; margin-top: 0.25rem;">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())

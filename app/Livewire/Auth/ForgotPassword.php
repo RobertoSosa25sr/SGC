@@ -24,7 +24,7 @@ class ForgotPassword extends Component
         ]);
 
         $this->user = User::where('email', $this->email)->first();
-        
+
         if (!$this->user->security_question_id) {
             throw ValidationException::withMessages([
                 'email' => [__('No hay una pregunta de seguridad configurada para esta cuenta.')],
@@ -74,7 +74,6 @@ class ForgotPassword extends Component
             session()->flash('status', __('La contraseña ha sido actualizada exitosamente.'));
 
             return redirect()->route('login');
-
         } catch (\Exception $e) {
             Notification::create([
                 'user_id' => $this->user->id,
@@ -94,6 +93,7 @@ class ForgotPassword extends Component
 
     public function render()
     {
-        return view('livewire.auth.forgot-password');
+        return view('livewire.auth.forgot-password')
+            ->layout('layouts.guest');
     }
-} 
+}
