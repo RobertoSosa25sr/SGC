@@ -1,58 +1,109 @@
-<div>
-    <div class="mb-4 text-sm text-gray-600">
-        @if ($step === 1)
-            {{ __('¿Olvidaste tu contraseña? Ingresa tu correo electrónico para comenzar el proceso de recuperación.') }}
-        @elseif ($step === 2)
-            {{ __('Por favor, responde tu pregunta de seguridad.') }}
-        @else
-            {{ __('Ingresa tu nueva contraseña.') }}
-        @endif
-    </div>
-
-    <x-validation-errors class="mb-4" />
-
-    @if ($step === 1)
-        <div>
-            <x-label for="email" value="{{ __('Email') }}" />
-            <x-input wire:model="email" id="email" class="block mt-1 w-full" type="email" required autofocus />
+<x-guest-layout>
+    <x-authentication-card>
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h1 style="font-size: 3.5rem; color: #3C5D9D; font-weight: bold; margin-bottom: 1.5rem;">
+                Sistema de Gestión de Consentimientos (SGC)
+            </h1>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-button wire:click="findUser">
-                {{ __('Continuar') }}
-            </x-button>
-        </div>
-    @elseif ($step === 2)
-        <div class="mb-4">
-            <x-label value="{{ __('Pregunta de Seguridad') }}" />
-            <div class="mt-1 text-gray-600">{{ $user->securityQuestion->question }}</div>
-        </div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <div style="width: 100%; max-width: 400px; padding: 2rem; border: 2px solid #3C5D9D; border-radius: 0.5rem; background-color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <!-- Mensaje dinámico según el paso -->
+                <div class="mb-4 text-sm text-gray-600" style="text-align: center;">
+                    @if ($step === 1)
+                    {{ __('¿Olvidaste tu contraseña? Ingresa tu correo electrónico para comenzar el proceso de recuperación.') }}
+                    @elseif ($step === 2)
+                    {{ __('Por favor, responde tu pregunta de seguridad.') }}
+                    @else
+                    {{ __('Ingresa tu nueva contraseña.') }}
+                    @endif
+                </div>
 
-        <div>
-            <x-label for="security_answer" value="{{ __('Respuesta') }}" />
-            <x-input wire:model="security_answer" id="security_answer" class="block mt-1 w-full" type="password" required />
-        </div>
+                <!-- Errores de validación -->
+                <x-validation-errors class="mb-4" />
 
-        <div class="flex items-center justify-end mt-4">
-            <x-button wire:click="verifyAnswer">
-                {{ __('Verificar') }}
-            </x-button>
-        </div>
-    @else
-        <div>
-            <x-label for="password" value="{{ __('Nueva Contraseña') }}" />
-            <x-input wire:model="password" id="password" class="block mt-1 w-full" type="password" required />
-        </div>
+                <!-- Paso 1: Ingresar correo electrónico -->
+                @if ($step === 1)
+                <div style="margin-bottom: 1rem;">
+                    <x-input
+                        wire:model="email"
+                        id="email"
+                        type="email"
+                        placeholder="Correo electrónico"
+                        style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
+                        required
+                        autofocus />
+                </div>
 
-        <div class="mt-4">
-            <x-label for="password_confirmation" value="{{ __('Confirmar Contraseña') }}" />
-            <x-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full" type="password" required />
-        </div>
+                <div style="text-align: center;">
+                    <button
+                        type="button"
+                        wire:click="findUser"
+                        style="width: 100%; padding: 0.5rem; background-color: #3C5D9D; color: white; border-radius: 0.375rem; font-weight: 500;">
+                        {{ __('Continuar') }}
+                    </button>
+                </div>
+                @endif
 
-        <div class="flex items-center justify-end mt-4">
-            <x-button wire:click="resetPassword">
-                {{ __('Actualizar Contraseña') }}
-            </x-button>
+                @if ($step === 2)
+                <div style="margin-bottom: 1rem;">
+                    <div style="font-weight: 500; color: #3C5D9D; margin-bottom: 0.5rem;">
+                        {{ __('Pregunta de Seguridad') }}
+                    </div>
+                    <div style="color: #4a5568;">{{ $user->securityQuestion->question }}</div>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <x-input
+                        wire:model="security_answer"
+                        id="security_answer"
+                        type="password"
+                        placeholder="Respuesta"
+                        style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
+                        required />
+                </div>
+
+                <div style="text-align: center;">
+                    <button
+                        type="button"
+                        wire:click="verifyAnswer"
+                        style="width: 100%; padding: 0.5rem; background-color: #3C5D9D; color: white; border-radius: 0.375rem; font-weight: 500;">
+                        {{ __('Verificar') }}
+                    </button>
+                </div>
+                @endif
+
+                @if ($step === 3)
+                <div style="margin-bottom: 1rem;">
+                    <x-input
+                        wire:model="password"
+                        id="password"
+                        type="password"
+                        placeholder="Nueva contraseña"
+                        style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
+                        required />
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <x-input
+                        wire:model="password_confirmation"
+                        id="password_confirmation"
+                        type="password"
+                        placeholder="Confirmar contraseña"
+                        style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
+                        required />
+                </div>
+
+                <div style="text-align: center;">
+                    <button
+                        type="button"
+                        wire:click="resetPassword"
+                        style="width: 100%; padding: 0.5rem; background-color: #3C5D9D; color: white; border-radius: 0.375rem; font-weight: 500;">
+                        {{ __('Actualizar Contraseña') }}
+                    </button>
+                </div>
+                @endif
+            </div>
         </div>
-    @endif
-</div> 
+    </x-authentication-card>
+</x-guest-layout>
