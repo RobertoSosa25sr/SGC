@@ -1,45 +1,45 @@
 <div>
     <x-form-section submit="updatePassword">
         <x-slot name="title">
-            {{ __('Actualizar Contraseña') }}
+            {{ __('Update Password') }} <!-- Título en inglés -->
         </x-slot>
 
         <x-slot name="description">
-            {{ __('Asegúrese de que su cuenta esté usando una contraseña segura.') }}
+            {{ __('Ensure your account is using a strong password.') }} <!-- Descripción en inglés -->
         </x-slot>
 
         <x-slot name="form">
-            <!-- Campo: Contraseña Actual -->
+            <!-- Campo: Current Password -->
             <div class="col-span-6 sm:col-span-4">
-                <x-label for="current_password" value="{{ __('Contraseña Actual') }}" style="color: #3C5D9D; font-weight: 500;" />
+                <x-label for="current_password" value="{{ __('Current Password') }}" class="font-medium" /> <!-- Texto en inglés -->
                 <x-input
                     id="current_password"
                     type="password"
-                    placeholder="Contraseña Actual"
+                    placeholder="Current Password"
                     wire:model="state.current_password"
                     autocomplete="current-password" />
                 <x-input-error for="current_password" class="mt-2" />
             </div>
 
-            <!-- Campo: Nueva Contraseña -->
+            <!-- Campo: New Password -->
             <div class="col-span-6 sm:col-span-4">
-                <x-label for="password" value="{{ __('Nueva Contraseña') }}" style="color: #3C5D9D; font-weight: 500;" />
+                <x-label for="password" value="{{ __('New Password') }}" class="font-medium" /> <!-- Texto en inglés -->
                 <x-input
                     id="password"
                     type="password"
-                    placeholder="Nueva Contraseña"
+                    placeholder="New Password"
                     wire:model="state.password"
                     autocomplete="new-password" />
                 <x-input-error for="password" class="mt-2" />
             </div>
 
-            <!-- Campo: Confirmar Contraseña -->
+            <!-- Campo: Confirm Password -->
             <div class="col-span-6 sm:col-span-4">
-                <x-label for="password_confirmation" value="{{ __('Confirmar Contraseña') }}" style="color: #3C5D9D; font-weight: 500;" />
+                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" class="font-medium" /> <!-- Texto en inglés -->
                 <x-input
                     id="password_confirmation"
                     type="password"
-                    placeholder="Confirmar Contraseña"
+                    placeholder="Confirm Password"
                     wire:model="state.password_confirmation"
                     autocomplete="new-password" />
                 <x-input-error for="password_confirmation" class="mt-2" />
@@ -47,12 +47,12 @@
         </x-slot>
 
         <x-slot name="actions">
-            <x-action-message class="me-3" on="saved" style="color: #3C5D9D;">
-                {{ __('Guardado.') }}
+            <x-action-message class="me-3" on="saved">
+                {{ __('Saved.') }} <!-- Mensaje en inglés -->
             </x-action-message>
 
-            <x-button style="background-color: #3C5D9D; color: white;">
-                {{ __('Guardar') }}
+            <x-button wire:loading.attr="disabled" wire:target="photo">
+                {{ __('Save') }} <!-- Texto en inglés -->
             </x-button>
         </x-slot>
     </x-form-section>
