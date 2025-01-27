@@ -1,69 +1,58 @@
-@php
-use Illuminate\Support\Facades\RateLimiter;
-use App\Providers\RouteServiceProvider;
-@endphp
-
 <x-guest-layout>
     <x-authentication-card>
-
-        <h1 class="text-center text-2xl font-bold mb-6 text-[#3C5D9D]">
-            Sistema de Gestión de Consentimientos<br>SGC
-        </h1>
-
-        <h2 class="text-center text-xl mb-6 text-[#3C5D9D]">INICIAR SESIÓN</h2>
-
-        <x-validation-errors class="mb-4" />
-
-        @session('status')
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ $value }}
+        <div style="text-align: center; margin-bottom: 2rem; ">
+            <h1 style="font-size: 3.5rem; color: #3C5D9D; font-weight: bold; margin-bottom: 1.5rem;">
+                Sistema de Gestión de Consentimientos (SGC)
+            </h1>
         </div>
-        @endsession
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <form method="POST" action="{{ route('login') }}" style="width: 100%; max-width: 400px; padding: 2rem; border: 2px solid #3C5D9D; border-radius: 0.5rem; background-color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                @csrf
+                <h3 style="text-align: center; font-size: 1.5rem; color: #3C5D9D; font-weight: bold; margin-bottom: 1.5rem;">
+                    INICIAR SESIÓN
+                </h3>
 
-            <div>
-                <x-input id="email"
-                    class="block mt-1 w-full rounded-md border-gray-300"
-                    type="email"
-                    name="email"
-                    :value="old('email')"
-                    required
-                    autofocus
-                    autocomplete="username"
-                    placeholder="Correo" />
-            </div>
+                <div style="margin-bottom: 1rem;">
+                    <x-input
+                        id="email"
+                        type="email"
+                        name="email"
+                        :value="old('email')"
+                        placeholder="Correo"
+                        style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
+                        required
+                        autofocus />
+                </div>
 
-            <div class="mt-4">
-                <x-input id="password"
-                    class="block mt-1 w-full rounded-md border-gray-300"
-                    type="password"
-                    name="password"
-                    required
-                    autocomplete="current-password"
-                    placeholder="Contraseña" />
-            </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <x-input
+                        id="password"
+                        type="password"
+                        name="password"
+                        placeholder="Contraseña"
+                        style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
+                        required />
+                </div>
 
-            <div class="mt-6">
-                <x-button class="w-full justify-center bg-[#3C5D9D] hover:bg-[#2C4B8B]">
-                    {{ __('Iniciar sesión') }}
-                </x-button>
-            </div>
+                <div>
+                    <button type="submit" style="width: 100%; padding: 0.5rem; background-color: #3C5D9D; color: white; border-radius: 0.375rem; font-weight: 500;">
+                        Iniciar sesión
+                    </button>
+                </div>
 
-            <div class="flex flex-col items-center justify-center mt-4 space-y-2">
-                @if (Route::has('password.request'))
-                <a class="text-sm text-[#3C5D9D] hover:text-[#2C4B8B]" href="{{ route('password.request') }}">
-                    {{ __('Olvidé mi contraseña') }}
-                </a>
-                @endif
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                    @if (Route::has('password.request'))
+                    <a href="{{ route('password.request') }}" style="color: #3C5D9D; text-decoration: none; font-size: 0.875rem;">
+                        Olvidé mi contraseña
+                    </a>
+                    @endif
 
-                @if (Route::has('register'))
-                <a class="text-sm text-[#3C5D9D] hover:text-[#2C4B8B]" href="{{ route('register') }}">
-                    {{ __('Registrarse') }}
-                </a>
-                @endif
-            </div>
-        </form>
+                    <a href="{{ route('register') }}" style="color: #3C5D9D; text-decoration: none; font-size: 0.875rem;">
+                        Registrarse
+                    </a>
+                </div>
+            </form>
+        </div>
     </x-authentication-card>
 </x-guest-layout>
