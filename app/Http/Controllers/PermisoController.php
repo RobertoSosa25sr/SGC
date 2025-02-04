@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use App\Models\Permiso;
 use App\Models\User_permiso;
 use Illuminate\Support\Facades\Auth;
@@ -45,6 +46,15 @@ class PermisoController extends Controller
     
         // Redirigir con un mensaje de éxito
         session()->flash('saved', 'Saved');
+        Notification::create([
+            'user_id' => $user->id,
+            'type' => 'policy_updated',
+            'message' => 'Sus permisos fueron actualizados',
+            'notified_at' => now(),
+            'read' => false,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent()
+        ]);
         return redirect()->route('permisos')->with('success', 'Permisos actualizados correctamente.');
     }
        
