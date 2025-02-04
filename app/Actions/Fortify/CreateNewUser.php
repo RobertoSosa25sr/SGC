@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 
@@ -29,15 +30,17 @@ class CreateNewUser implements CreatesNewUsers
             'security_answer' => ['required', 'string', 'min:3', 'max:255'],
         ])->validate();
 
-        $user = User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
-            'security_question_id' => $input['security_question_id'],
-            'security_answer' => Hash::make($input['security_answer']),
-        ]);
-
-        // Crear notificación de cuenta creada
+        $user = DB::transaction(function () use ($input) {
+            return User::create([
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'password' => Hash::make($input['password']),
+                'security_question_id' => $input['security_question_id'],
+                'security_answer' => Hash::make($input['security_answer']),
+            ]);
+        });
+        
+        // Ahora fuera de la transacción, creamos la notificación
         Notification::create([
             'user_id' => $user->id,
             'type' => 'account_created',

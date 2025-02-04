@@ -7,6 +7,7 @@
     <title>SGC - Redirigiendo...</title>
 </head>
 
+
 <body>
     <p>Si no eres redirigido automáticamente, <a href="{{ route('login') }}">haz clic aquí</a>.</p>
 </body>
