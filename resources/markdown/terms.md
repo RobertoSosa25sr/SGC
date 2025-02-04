@@ -1,3 +1,5 @@
-# Terms of Service
+# Terminos de Servicio
+  
+Al registrarse y utilizar nuestro sistema de gestión de consentimientos, el usuario acepta proporcionar información veraz y mantener la confidencialidad de sus credenciales de acceso. El usuario es responsable del uso de su cuenta y de gestionar sus permisos de manera adecuada, incluyendo la autorización o revocación del acceso a su información personal para recibir notificaciones, mensajes o llamadas. Además, el usuario puede habilitar funciones de seguridad adicionales, como la autenticación en dos factores. 
 
-Edit this file to define the terms of service for your application.
+El uso de la aplicación debe realizarse conforme a la Ley Orgánica de Protección de Datos Personales de Ecuador y demás normativas aplicables. No está permitido el uso indebido de la plataforma, incluyendo intentos de acceso no autorizado, manipulación de datos o cualquier acción que comprometa la seguridad del sistema. La empresa se reserva el derecho de suspender o eliminar cuentas en caso de detectar actividades fraudulentas o que infrinjan estos términos.
