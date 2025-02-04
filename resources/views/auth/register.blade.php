@@ -1,77 +1,165 @@
 <x-guest-layout>
     <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h1 style="font-size: 3.5rem; color: #3C5D9D; font-weight: bold; margin-bottom: 1.5rem;">
+                Sistema de Gestión de Consentimientos (SGC)
+            </h1>
+        </div>
 
-        <x-validation-errors class="mb-4" />
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <form method="POST" action="{{ route('register') }}" style="width: 100%; max-width: 400px; padding: 2rem; border: 2px solid #3C5D9D; border-radius: 0.5rem; background-color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                @csrf
 
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
+                <h3 style="text-align: center; font-size: 1.5rem; color: #3C5D9D; font-weight: bold; margin-bottom: 1.5rem;">
+                    CREAR CUENTA
+                </h3>
 
-            <div>
-                <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            </div>
+                <x-validation-errors class="mb-4" />
 
-            <div class="mt-4">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            </div>
+                <!-- Nombres -->
+                <div style="margin-bottom: 1rem;">
+                    <x-input
+                        id="name"
+                        type="text"
+                        name="name"
+                        :value="old('name')"
+                        placeholder="Nombres"
+                        style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
+                        required
+                        pattern="^[A-Za-zÁáÉéÍíÓóÚúÑñ\s]{2,50}$"
+                        title="Solo se permiten letras y espacios, mínimo 2 caracteres"
+                        maxlength="50"
+                        oninvalid="this.setCustomValidity('Por favor ingrese un nombre válido')"
+                        oninput="this.setCustomValidity('')"
+                        autofocus />
+                    @error('name')
+                    <p style="color: #E53E3E; font-size: 0.875rem; margin-top: 0.25rem;">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
+                <!-- Correo -->
+                <div style="margin-bottom: 1rem;">
+                    <x-input
+                        id="email"
+                        type="email"
+                        name="email"
+                        :value="old('email')"
+                        placeholder="Correo"
+                        style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
+                        required
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        maxlength="255"
+                        title="Por favor ingrese un correo electrónico válido"
+                        oninvalid="this.setCustomValidity('Por favor ingrese un correo electrónico válido')"
+                        oninput="this.setCustomValidity('')" />
+                    @error('email')
+                    <p style="color: #E53E3E; font-size: 0.875rem; margin-top: 0.25rem;">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
+                <!-- Contraseña -->
+                <div style="margin-bottom: 1rem;">
+                    <x-input
+                        id="password"
+                        type="password"
+                        name="password"
+                        placeholder="Contraseña"
+                        style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
+                        required
+                        minlength="8"
+                        pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                        title="La contraseña debe tener al menos 8 caracteres, incluyendo letras y números"
+                        oninvalid="this.setCustomValidity('La contraseña debe tener al menos 8 caracteres, incluyendo letras y números')"
+                        oninput="this.setCustomValidity('')" />
+                    @error('password')
+                    <p style="color: #E53E3E; font-size: 0.875rem; margin-top: 0.25rem;">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <div class="mt-4">
-                <x-label for="security_question_id" value="{{ __('Security Question') }}" />
-                <select id="security_question_id" name="security_question_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                    <option value="">{{ __('Select a security question') }}</option>
-                    @foreach(\App\Models\SecurityQuestion::all() as $question)
+                <!-- Confirmar Contraseña -->
+                <div style="margin-bottom: 1rem;">
+                    <x-input
+                        id="password_confirmation"
+                        type="password"
+                        name="password_confirmation"
+                        placeholder="Confirmar Contraseña"
+                        style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
+                        required
+                        minlength="8"
+                        oninvalid="this.setCustomValidity('Por favor confirme su contraseña')"
+                        oninput="this.setCustomValidity('')" />
+                </div>
+
+                <!-- Pregunta de seguridad -->
+                <div style="margin-bottom: 1rem;">
+                    <select
+                        id="security_question_id"
+                        name="security_question_id"
+                        style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
+                        required
+                        oninvalid="this.setCustomValidity('Por favor seleccione una pregunta de seguridad')"
+                        oninput="this.setCustomValidity('')">
+                        <option value="">Pregunta de seguridad</option>
+                        @foreach(\App\Models\SecurityQuestion::all() as $question)
                         <option value="{{ $question->id }}" {{ old('security_question_id') == $question->id ? 'selected' : '' }}>
                             {{ $question->question }}
                         </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="mt-4">
-                <x-label for="security_answer" value="{{ __('Security Answer') }}" />
-                <x-input id="security_answer" class="block mt-1 w-full" type="password" name="security_answer" required />
-            </div>
-
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
-
-                            <div class="ms-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Privacy Policy').'</a>',
-                                ]) !!}
-                            </div>
-                        </div>
-                    </x-label>
+                        @endforeach
+                    </select>
+                    @error('security_question_id')
+                    <p style="color: #E53E3E; font-size: 0.875rem; margin-top: 0.25rem;">{{ $message }}</p>
+                    @enderror
                 </div>
-            @endif
 
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
+                <!-- Respuesta de seguridad -->
+                <div style="margin-bottom: 1.5rem;">
+                    <x-input
+                        id="security_answer"
+                        type="text"
+                        name="security_answer"
+                        placeholder="Respuesta"
+                        style="width: 100%; padding: 0.5rem; border-radius: 0.375rem; border: 1px solid #3C5D9D; background-color: white;"
+                        required
+                        minlength="3"
+                        maxlength="100"
+                        oninvalid="this.setCustomValidity('Por favor ingrese una respuesta de seguridad')"
+                        oninput="this.setCustomValidity('')" />
+                    @error('security_answer')
+                    <p style="color: #E53E3E; font-size: 0.875rem; margin-top: 0.25rem;">{{ $message }}</p>
+                    @enderror
+                </div>
 
-                <x-button class="ms-4">
-                    {{ __('Register') }}
-                </x-button>
-            </div>
-        </form>
+                @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
+                <div style="margin-bottom: 1rem; display: flex; align-items: center;">
+                    <x-checkbox name="terms" id="terms" required style="margin-right: 0.5rem; border: 1px solid #3C5D9D; border-radius: 0.25rem;" />
+                    <label for="terms" style="font-size: 0.875rem; color: #3C5D9D;">
+                        {!! __('Acepto los :terms_of_service y la :privacy_policy', [
+                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" style="text-decoration: underline; color: #3C5D9D;">Términos de Servicio</a>',
+                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" style="text-decoration: underline; color: #3C5D9D;">Política de Privacidad</a>',
+                        ]) !!}
+                    </label>
+                </div>
+                @else
+                <div style="margin-bottom: 1rem; display: flex; align-items: center;">
+                    <x-checkbox name="terms" id="terms" required style="margin-right: 0.5rem; border: 1px solid #3C5D9D; border-radius: 0.25rem;" />
+                    <label for="terms" style="font-size: 0.875rem; color: #3C5D9D;">
+                        Acepto la Política de privacidad
+                    </label>
+                </div>
+                @endif
+
+                <div>
+                    <x-button style="width: 100%; padding: 0.5rem; background-color: #3C5D9D; color: white; border-radius: 0.375rem; font-weight: 500;">
+                        Registrarse
+                    </x-button>
+                </div>
+
+                <div style="display: flex; justify-content: center; margin-top: 1rem;">
+                    <a href="{{ route('login') }}" style="color: #3C5D9D; text-decoration: none; font-size: 0.875rem;">
+                        Ya tengo una cuenta
+                    </a>
+                </div>
+            </form>
+        </div>
     </x-authentication-card>
 </x-guest-layout>

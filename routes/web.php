@@ -8,6 +8,13 @@ use App\Http\Middleware\LoginRateLimiting;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AccessLogsController;
 use App\Http\Controllers\PermisoController;
+
+use App\Livewire\Auth\ForgotPassword;
+
+Route::get('/forgot-password', ForgotPassword::class)
+    ->name('password.request')
+    ->middleware('guest');
+
 Route::get('/', function () {
     return view('welcome');
 });
